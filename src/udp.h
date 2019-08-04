@@ -40,8 +40,12 @@ namespace mavlink_indoor_sdk
 class UDP_Protocol : public LowLevel
 {
 public:
+    UDP_Protocol();
     UDP_Protocol(string url);
+    
     void start();
+    void start(string url);
+    
     void stop();
 
     int read_message(mavlink_message_t &message);

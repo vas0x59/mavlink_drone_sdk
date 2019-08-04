@@ -40,8 +40,12 @@ namespace mavlink_indoor_sdk
 class TCP_Protocol : public LowLevel
 {
 public:
+    TCP_Protocol();
     TCP_Protocol(string url);
+
     void start();
+    void start(string url);
+    
     void stop();
 
     int read_message(mavlink_message_t &message);

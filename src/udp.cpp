@@ -8,18 +8,12 @@ UDP_Protocol::UDP_Protocol(string url)
     target_ip = url.substr(url.find_last_of('/') + 1, url.find_last_of(':') - (url.find_last_of('/') + 1));
     port = stoi(url.substr(url.find_last_of(':') + 1, url.length() - (url.find_last_of(':') + 1)));
     std::cout << "port" << port << " ip " << target_ip << std::endl;
-    // socklen_t fromlen = sizeof(gcAddr);
-    // memset(&locAddr, 0, sizeof(locAddr));
-    // locAddr.sin_family = AF_INET;
-    // locAddr.sin_addr.s_addr = INADDR_ANY;
-    // locAddr.sin_port = htons(14551);
-
-    // memset(&gcAddr, 0, sizeof(gcAddr));
-    // gcAddr.sin_family = AF_INET;
-    // gcAddr.sin_addr.s_addr = inet_addr(target_ip.c_str());
-    // gcAddr.sin_port = htons(14550);
-    // status = true;
 }
+
+UDP_Protocol::UDP_Protocol()
+{
+}
+
 int UDP_Protocol::write_message(mavlink_message_t &message)
 {
     // len = mavlink_msg_to_send_buffer(buf_t, &message);
@@ -30,11 +24,13 @@ int UDP_Protocol::write_message(mavlink_message_t &message)
 
     uint16_t len = mavlink_msg_to_send_buffer(data, &message);
     // int r = sendto(sock, data, len, 0, (struct sockaddr *)&sockaddr, sizeof(sockaddr));
-    int r = sendto(sock, data, len, 0, (struct sockaddr*)&sockaddr, sizeof(struct sockaddr));
-    if (r < 0) {
+    int r = sendto(sock, data, len, 0, (struct sockaddr *)&sockaddr, sizeof(struct sockaddr));
+    if (r < 0)
+    {
         fprintf(stderr, "Could not send to %d: r=%d (%m)\n", sock, r);
     }
-    else {
+    else
+    {
         // std::cout << "ok\n";
     }
 
@@ -73,7 +69,8 @@ int UDP_Protocol::read_message(mavlink_message_t &message)
 void UDP_Protocol::start()
 {
     sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (sock == -1) {
+    if (sock == -1)
+    {
         fprintf(stderr, "Could not create socket (%m)\n");
         status = 0;
     }
@@ -83,24 +80,33 @@ void UDP_Protocol::start()
     sockaddr.sin_addr.s_addr = inet_addr(target_ip.c_str());
     sockaddr.sin_port = htons(port);
 
-    if (bind(sock, (struct sockaddr *)&sockaddr, sizeof(struct sockaddr)) == -1) {
+    if (bind(sock, (struct sockaddr *)&sockaddr, sizeof(struct sockaddr)) == -1)
+    {
         fprintf(stderr, "Could not bind to %s:%d (%m)", target_ip.c_str(), port);
         // free(target_ip);
         // return 1;
         status = 0;
     }
-    else {
+    else
+    {
         status = 1;
     }
 
-	if (fcntl(sock, F_SETFL, O_NONBLOCK | O_ASYNC) < 0)
+    if (fcntl(sock, F_SETFL, O_NONBLOCK | O_ASYNC) < 0)
     {
-		fprintf(stderr, "error setting nonblocking: %s\n", strerror(errno));
-		// close(sock);
-		// exit(EXIT_FAILURE);
+        fprintf(stderr, "error setting nonblocking: %s\n", strerror(errno));
+        // close(sock);
+        // exit(EXIT_FAILURE);
 
         status = 0;
     }
+}
+void UDP_Protocol::start(string url)
+{
+    target_ip = url.substr(url.find_last_of('/') + 1, url.find_last_of(':') - (url.find_last_of('/') + 1));
+    port = stoi(url.substr(url.find_last_of(':') + 1, url.length() - (url.find_last_of(':') + 1)));
+    std::cout << "port" << port << " ip " << target_ip << std::endl;
+    start();
 }
 void UDP_Protocol::stop()
 {

@@ -8,24 +8,13 @@ TCP_Protocol::TCP_Protocol(string url)
     target_ip = url.substr(url.find_last_of('/') + 1, url.find_last_of(':') - (url.find_last_of('/') + 1));
     port = stoi(url.substr(url.find_last_of(':') + 1, url.length() - (url.find_last_of(':') + 1)));
     std::cout << "port" << port << " ip " << target_ip << std::endl;
-    // socklen_t fromlen = sizeof(gcAddr);
-    // memset(&locAddr, 0, sizeof(locAddr));
-    // locAddr.sin_family = AF_INET;
-    // locAddr.sin_addr.s_addr = INADDR_ANY;
-    // locAddr.sin_port = htons(14551);
+}
 
-    // memset(&gcAddr, 0, sizeof(gcAddr));
-    // gcAddr.sin_family = AF_INET;
-    // gcAddr.sin_addr.s_addr = inet_addr(target_ip.c_str());
-    // gcAddr.sin_port = htons(14550);
-    // status = true;
+TCP_Protocol::TCP_Protocol()
+{
 }
 int TCP_Protocol::write_message(mavlink_message_t &message)
 {
-    // len = mavlink_msg_to_send_buffer(buf_t, &message);
-    // std::cout << "sending\n";
-    // int bytes_sent = sendto(sock, buf_t, len, 0, (struct sockaddr *)&gcAddr, sizeof(struct sockaddr_in));
-    // return bytes_sent;
     uint8_t data[MAVLINK_MAX_PACKET_LEN];
 
     uint16_t len = mavlink_msg_to_send_buffer(data, &message);
@@ -78,7 +67,8 @@ int TCP_Protocol::read_message(mavlink_message_t &message)
 void TCP_Protocol::start()
 {
     sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (sock == -1) {
+    if (sock == -1)
+    {
         fprintf(stderr, "Could not create socket (%m)\n");
         // return -1;
     }
@@ -89,15 +79,26 @@ void TCP_Protocol::start()
 
     printf("Connecting to TCP: %s:%i\n", target_ip.c_str(), port);
 
-    if (connect(sock, (struct sockaddr *)&sockaddr, sizeof(sockaddr)) != 0) {
+    if (connect(sock, (struct sockaddr *)&sockaddr, sizeof(sockaddr)) != 0)
+    {
         fprintf(stderr, "Could not connect to socket (%m)\n");
         // return -1;
     }
 
-    if (fcntl(sock, F_SETFL, O_NONBLOCK | O_ASYNC) < 0) {
+    if (fcntl(sock, F_SETFL, O_NONBLOCK | O_ASYNC) < 0)
+    {
         fprintf(stderr, "Error setting socket sock as non-blocking");
     }
 }
+
+void TCP_Protocol::start(string url)
+{
+    target_ip = url.substr(url.find_last_of('/') + 1, url.find_last_of(':') - (url.find_last_of('/') + 1));
+    port = stoi(url.substr(url.find_last_of(':') + 1, url.length() - (url.find_last_of(':') + 1)));
+    std::cout << "port" << port << " ip " << target_ip << std::endl;
+    start();
+}
+
 void TCP_Protocol::stop()
 {
     close(sock);
