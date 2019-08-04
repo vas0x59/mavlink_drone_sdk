@@ -2,6 +2,7 @@
 .vscode/*
 CMakeFiles/*
 *.so
+!libmavlink_indoor_sdk.so
 *.a
 *.cmake
 CMakeCache.txt
