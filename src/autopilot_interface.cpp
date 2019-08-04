@@ -307,14 +307,15 @@ void AutopilotInterface::read_messages()
         // Check for receipt of all items
         received_all =
             this_timestamps.heartbeat &&
-            // this_timestamps.battery_status &&
-            // this_timestamps.radio_status &&
-            // this_timestamps.local_position_ned &&
-            // this_timestamps.global_position_int &&
-            // this_timestamps.position_target_local_ned &&
-            // this_timestamps.position_target_global_int &&
-            // this_timestamps.highres_imu &&
-            // this_timestamps.attitude &&
+            this_timestamps.battery_status &&
+            this_timestamps.radio_status &&
+            this_timestamps.local_position_ned &&
+            this_timestamps.local_position_vision_ned &&
+            this_timestamps.global_position_int &&
+            this_timestamps.position_target_local_ned &&
+            this_timestamps.position_target_global_int &&
+            this_timestamps.highres_imu &&
+            this_timestamps.attitude &&
             this_timestamps.sys_status;
 
         // give the write thread time to use the port
