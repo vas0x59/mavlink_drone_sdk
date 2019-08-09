@@ -83,7 +83,8 @@ Telemetry Drone::get_telemetry(Frame frame)
     telemetry.mode = custom_mode_to_mode(ai->current_messages.heartbeat.custom_mode);
     // telemetry.mode = base_mode_to_mode(ai->current_messages.heartbeat.base_mode);
 
-    telemetry.armed = base_mode_to_arm(ai->current_messages.heartbeat.base_mode);
+    // telemetry.armed = base_mode_to_arm(ai->current_messages.heartbeat.base_mode);
+    telemetry.armed = ((ai->current_messages.heartbeat.base_mode & MAV_MODE_FLAG_SAFETY_ARMED) ? true : false);
     // telemetry.battery.cells_count = ai->current_messages.battery_status
     return telemetry;
     // for
@@ -102,7 +103,7 @@ void Drone::toggle_arming(bool arm_)
     com.param1 = arm_; // flag >0.5 => start, <0.5 => stop
     // Encode
     mavlink_message_t message;
-    mavlink_msg_command_long_encode(11, MAV_COMP_ID_ALL, &message, &com);
+    mavlink_msg_command_long_encode(ai->system_id, MAV_COMP_ID_ALL, &message, &com);
 
     // Send the message
     int len = ai->write_message(message);
@@ -144,7 +145,7 @@ void Drone::land()
     // com.param1 = (float)arm_; // flag >0.5 => start, <0.5 => stop
     // Encode
     mavlink_message_t message;
-    mavlink_msg_command_long_encode(11, MAV_COMP_ID_ALL, &message, &com);
+    mavlink_msg_command_long_encode(ai->system_id , MAV_COMP_ID_ALL, &message, &com);
 
     // Send the message
     int len = ai->write_message(message);
