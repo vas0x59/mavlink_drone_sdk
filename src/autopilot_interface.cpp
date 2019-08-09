@@ -318,6 +318,12 @@ void AutopilotInterface::read_messages()
             this_timestamps.attitude &&
             this_timestamps.sys_status;
 
+        if ((get_time_usec() - this_timestamps.heartbeat) < 2*1000*1000){
+            connected = true;
+        }
+        else{
+            connected = false;
+        }
         // give the write thread time to use the port
         if (writing_status > false)
         {
@@ -359,7 +365,7 @@ int AutopilotInterface::toggle_offboard_control(bool flag)
     else
         cmd.param2 = 12;
 
-    mavlink_msg_command_long_encode(11, MAV_COMP_ID_ALL, &msg, &cmd);
+    mavlink_msg_command_long_encode(system_id, MAV_COMP_ID_ALL, &msg, &cmd);
     int len = lowlevel_protocol->write_message(msg);
 
     // Done!
@@ -477,7 +483,7 @@ void AutopilotInterface::start()
     // System ID
     if (not system_id)
     {
-        system_id = 11;
+        system_id = 1;
         printf("GOT VEHICLE SYSTEM ID: %i\n", system_id);
     }
 
@@ -681,7 +687,7 @@ void AutopilotInterface::write_setpoint()
     // --------------------------------------------------------------------------
 
     mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_encode(11, MAV_COMP_ID_ALL, &message, &sp);
+    mavlink_msg_set_position_target_local_ned_encode(system_id , MAV_COMP_ID_ALL, &message, &sp);
     // mavlink_msg_set_position_target_local_ned
     // --------------------------------------------------------------------------
     //   WRITE
