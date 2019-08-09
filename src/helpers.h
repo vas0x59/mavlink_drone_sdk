@@ -9,7 +9,7 @@
 #include "mavlink.h"
 #include <pthread.h> // This uses POSIX Threads
 #include <string>
-
+#include "px4_custom_mode.h"
 
 using namespace std;
 namespace mavlink_indoor_sdk
@@ -113,7 +113,7 @@ float get_dist(PointXYZ p1, PointXYZ p2);
 MAV_FRAME frame_to_mav_frame(Frame frame);
 Mode custom_mode_to_mode(uint32_t mav_mode);
 Mode base_mode_to_mode(uint8_t mav_mode);
-bool base_mode_to_arm(uint8_t mav_mode);
+// bool base_mode_to_arm(uint8_t mav_mode);
 
 PointXYZ enu_to_ned(PointXYZ enu);
 PointXYZ ned_to_enu(PointXYZ ned);
