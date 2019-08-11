@@ -118,7 +118,7 @@ string PointXYZ::ToString()
 }
 string RotationRPY::ToString()
 {
-    return "[" + to_string(roll) + " " + to_string(pitch) + " " + to_string(yaw) + "]";
+    return "roll:" + to_string(roll) + " pitch:" + to_string(pitch) + " yaw:" + to_string(yaw);
 }
 string PointXYZyaw::ToString()
 {
