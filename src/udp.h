@@ -13,16 +13,13 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <time.h>
-#if (defined __QNX__) | (defined __QNXNTO__)
-/* QNX specific headers */
-#include <unix.h>
-#else
+
 /* Linux / MacOS POSIX timer headers */
 #include <sys/time.h>
 #include <time.h>
 #include <arpa/inet.h>
 #include <stdbool.h> /* required for the definition of bool in C99 */
-#endif
+
 
 /* This assumes you have the mavlink headers on your include path
  or in the same folder as this source file */
