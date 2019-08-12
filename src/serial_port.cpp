@@ -74,7 +74,7 @@ Serial_Port::
 Serial_Port(string url)
 {
 	initialize_defaults();
-	uart_name = url.substr(url.find_last_of('/') + 1, url.find_last_of(':')).c_str();
+	uart_name = url.substr(url.find_first_of('/') + 2, url.find_last_of(':')).c_str();
 	baudrate  = stoi(url.substr(url.find_last_of(':') + 1, url.length()));
 }
 
