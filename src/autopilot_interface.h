@@ -1,4 +1,4 @@
-// by Vasily Yuryev
+// based on https://github.com/mavlink/c_uart_interface_example
 
 #ifndef AUTOPILOT_INTERACE_H
 #define AUTOPILOT_INTERACE_H

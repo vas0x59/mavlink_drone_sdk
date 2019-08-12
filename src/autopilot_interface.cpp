@@ -1,3 +1,4 @@
+// based on https://github.com/mavlink/c_uart_interface_example
 #include "autopilot_interface.h"
 #include <pthread.h>
 #include <stdio.h>
