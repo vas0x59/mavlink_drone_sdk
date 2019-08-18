@@ -10,6 +10,7 @@
 #include <pthread.h> // This uses POSIX Threads
 #include <string>
 #include "px4_custom_mode.h"
+#include <cmath>
 
 using namespace std;
 namespace mavlink_indoor_sdk
