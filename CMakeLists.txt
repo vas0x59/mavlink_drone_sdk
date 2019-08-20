@@ -14,5 +14,6 @@ add_library(mavlink_indoor_sdk  SHARED
     ./src/helpers.cpp
     ./src/serial_port.cpp
     ./src/autopilot_interface.cpp
+    ./src/log.cpp
 )
 
