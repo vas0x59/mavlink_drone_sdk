@@ -164,6 +164,9 @@ void Drone::land()
 }
 void Drone::sleep(uint16_t msec)
 {
+    if (log >= 2){
+        LogInfo("Drone", "Sleep: " + to_string(msec));
+    }
     usleep((uint32_t)msec * 1000);
 };
 void Drone::navigate_wait(PointXYZyaw pose, Frame frame, float speed, float thresh){
@@ -172,13 +175,14 @@ void Drone::navigate_wait(PointXYZyaw pose, Frame frame, float speed, float thre
     while (true){
         Telemetry telemetry = get_telemetry(FRAME_BODY);
         // std::cout << telemetry.ToString() << std::endl;
-        if (get_dist(telemetry.position, {pose.x, pose.y, pose.z}) < thresh){
-            break;
-        }
         if (log >= 2){
             LogInfo("Drone", "Telemetry: " + telemetry.ToString());
         }
-        sleep(100);
+        if (get_dist(telemetry.position, {pose.x, pose.y, pose.z}) < thresh){
+            break;
+        }
+        
+        sleep(80);
         // cout << "z: " <<  telemetry.position.x << "y: " << telemetry.position.y << "z: " << telemetry.position.z << endl;
     }
 }
