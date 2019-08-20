@@ -84,7 +84,7 @@ void set_yaw(float yaw, mavlink_set_position_target_local_ned_t &sp)
 
     sp.yaw = yaw;
 
-    printf("POSITION SETPOINT YAW = %.4f \n", sp.yaw);
+    // printf("POSITION SETPOINT YAW = %.4f \n", sp.yaw);
 }
 
 /*
@@ -378,19 +378,19 @@ void AutopilotInterface::enable_offboard_control()
     // Should only send this command once
     if (control_status == false)
     {
-        printf("ENABLE OFFBOARD MODE\n");
+         LogInfo("autipilot_inter", "ENABLE OFFBOARD MODE");
 
         int success = toggle_offboard_control(true);
-
+        // sprintf()
         if (success)
             control_status = true;
         else
         {
-            fprintf(stderr, "Error: off-board mode not set, could not write message\n");
+            fprintf(stderr, "Error: off-board mode not set, could not write message");
             //throw EXIT_FAILURE;
         }
 
-        printf("\n");
+        //printf("\n");
 
     } // end: if not offboard_status
 }
@@ -403,7 +403,7 @@ void AutopilotInterface::disable_offboard_control()
 
     if (control_status == true)
     {
-        printf("DISABLE OFFBOARD MODE\n");
+         LogInfo("autipilot_inter", "DISABLE OFFBOARD MODE");
 
         int success = toggle_offboard_control(false);
 
@@ -411,11 +411,11 @@ void AutopilotInterface::disable_offboard_control()
             control_status = false;
         else
         {
-            fprintf(stderr, "Error: off-board mode not set, could not write message\n");
+            fprintf(stderr, "Error: off-board mode not set, could not write message");
             //throw EXIT_FAILURE;
         }
 
-        printf("\n");
+        //printf("\n");
 
     } // end: if offboard_status
 }
@@ -437,14 +437,14 @@ void AutopilotInterface::start()
     //   READ THREAD
     // --------------------------------------------------------------------------
 
-    printf("START READ THREAD \n");
+    LogInfo("autipilot_inter", "START READ THREAD ");
 
     result = pthread_create(&read_tid, NULL, &start_autopilot_interface_read_thread, this);
     if (result)
         throw result;
 
     // now we're reading messages
-    printf("\n");
+    //printf("\n");
 
     // --------------------------------------------------------------------------
     //   CHECK FOR MESSAGES
@@ -458,7 +458,7 @@ void AutopilotInterface::start()
     // hb.
     mavlink_msg_heartbeat_encode(2, 0, &msg, &hb);
     // lowlevel_protocol->write_message(msg);
-    printf("CHECK FOR MESSAGES\n");
+    LogInfo("autipilot_inter", "CHECK FOR MESSAGES");
 
     while (not current_messages.sysid)
     {
@@ -467,10 +467,10 @@ void AutopilotInterface::start()
         usleep(500000); // check at 2Hz
     }
 
-    printf("Found\n");
+    LogInfo("autipilot_inter", "Found");
 
     // now we know autopilot is sending messages
-    printf("\n");
+    //printf("\n");
 
     // --------------------------------------------------------------------------
     //   GET SYSTEM and COMPONENT IDs
@@ -493,7 +493,7 @@ void AutopilotInterface::start()
     {
         autopilot_id = current_messages.compid;
         printf("GOT AUTOPILOT COMPONENT ID: %i\n", autopilot_id);
-        printf("\n");
+        //printf("\n");
     }
 
     // --------------------------------------------------------------------------
@@ -523,14 +523,14 @@ void AutopilotInterface::start()
 
     printf("INITIAL POSITION XYZ = [ %.4f , %.4f , %.4f ] \n", initial_position.x, initial_position.y, initial_position.z);
     printf("INITIAL POSITION YAW = %.4f \n", initial_position.yaw);
-    printf("\n");
+    //printf("\n");
 
     // we need this before starting the write thread
 
     // --------------------------------------------------------------------------
     //   WRITE THREAD
     // --------------------------------------------------------------------------
-    printf("START WRITE THREAD \n");
+    LogInfo("autipilot_inter", "START WRITE THREAD ");
 
     result = pthread_create(&write_tid, NULL, &start_autopilot_interface_write_thread, this);
     if (result)
@@ -541,7 +541,7 @@ void AutopilotInterface::start()
         usleep(100000); // 10Hz
 
     // now we're streaming setpoint commands
-    printf("\n");
+    //printf("\n");
 
     // Done!
     return;
@@ -583,7 +583,7 @@ void AutopilotInterface::start_write_thread(void)
 void AutopilotInterface::stop()
 {
 
-    printf("CLOSE THREADS\n");
+    LogInfo("autipilot_inter", "CLOSE THREADS");
 
     // signal exit
     time_to_exit = true;
@@ -593,7 +593,7 @@ void AutopilotInterface::stop()
     pthread_join(write_tid, NULL);
 
     // now the read and write threads are closed
-    printf("\n");
+    //printf("\n");
 
     // still need to close the serial_port separately
 }

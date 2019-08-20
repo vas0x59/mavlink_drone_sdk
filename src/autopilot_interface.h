@@ -147,6 +147,7 @@ public:
     void calc_nav_setpoint();
     Mavlink_Messages current_messages;
     bool connected = false;
+    uint8_t log = 2;
     // void navigate()
 private:
     
