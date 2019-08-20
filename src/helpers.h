@@ -91,6 +91,13 @@ struct PointXYZyaw
 
     string ToString();
 };
+enum Frame
+{
+    FRAME_VISION,
+    FRAME_LOCAL,
+    FRAME_BODY
+};
+
 struct Telemetry
 {
     PointXYZ position;
@@ -103,12 +110,7 @@ struct Telemetry
     Frame frame;
     string ToString();
 };
-enum Frame
-{
-    FRAME_VISION,
-    FRAME_LOCAL,
-    FRAME_BODY
-};
+
 
 string frame_ToString(Frame frame);
 string mode_ToString(Mode mode);
