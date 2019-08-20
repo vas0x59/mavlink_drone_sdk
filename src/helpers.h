@@ -18,6 +18,7 @@ namespace mavlink_indoor_sdk
 {
 
 uint64_t get_time_usec();
+uint64_t get_time_msec();
 
 enum Mode
 {

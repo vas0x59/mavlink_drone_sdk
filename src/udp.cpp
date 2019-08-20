@@ -8,7 +8,7 @@ UDP_Protocol::UDP_Protocol(string url)
     // string target_ip =
     target_ip = url.substr(url.find_last_of('/') + 1, url.find_last_of(':') - (url.find_last_of('/') + 1));
     port = stoi(url.substr(url.find_last_of(':') + 1, url.length() - (url.find_last_of(':') + 1)));
-    std::cout << "port" << port << " ip " << target_ip << std::endl;
+    // std::cout << "port" << port << " ip " << target_ip << std::endl;
 }
 
 UDP_Protocol::UDP_Protocol()
@@ -116,7 +116,8 @@ void UDP_Protocol::start()
     sock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sock == -1)
     {
-        fprintf(stderr, "Could not create socket (%m)\n");
+        // fprintf(stderr, "Could not create socket (%m)\n");
+        LogError("UDP Connection", "Could not create socke (" + string(strerror(errno)) + ")");
         status = 0;
     }
 
@@ -124,10 +125,11 @@ void UDP_Protocol::start()
     addr.sin_family = AF_INET;
     addr.sin_addr.s_addr = inet_addr(target_ip.c_str());
     addr.sin_port = htons(port);
-
+    LogInfo("UDP Connection", "target_ip: " + target_ip + " port: " + to_string(port));
     if (bind(sock, (struct sockaddr *)&addr, sizeof(struct sockaddr)) == -1)
     {
-        fprintf(stderr, "Could not bind to %s:%d (%m)", target_ip.c_str(), port);
+        // fprintf(stderr, "Could not bind to %s:%d (%m)", target_ip.c_str(), port);
+        LogError("UDP Connection", "Could not bind (" + string(strerror(errno)) + ")");
         // free(target_ip);
         // return 1;
         status = 0;
@@ -139,7 +141,8 @@ void UDP_Protocol::start()
 
     if (fcntl(sock, F_SETFL, O_NONBLOCK | O_ASYNC) < 0)
     {
-        fprintf(stderr, "error setting nonblocking: %s\n", strerror(errno));
+        // fprintf(stderr, "error setting nonblocking: %s\n", strerror(errno));
+        LogError("UDP Connection", "error setting nonblocking (" + string(strerror(errno)) + ")");
         // close(sock);
         // exit(EXIT_FAILURE);
 
@@ -150,7 +153,7 @@ void UDP_Protocol::start(string url)
 {
     target_ip = url.substr(url.find_last_of('/') + 1, url.find_last_of(':') - (url.find_last_of('/') + 1));
     port = stoi(url.substr(url.find_last_of(':') + 1, url.length() - (url.find_last_of(':') + 1)));
-    std::cout << "port" << port << " ip " << target_ip << std::endl;
+    // std::cout << "port" << port << " ip " << target_ip << std::endl;
     start();
 }
 void UDP_Protocol::stop()

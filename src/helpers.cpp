@@ -10,6 +10,12 @@ uint64_t get_time_usec()
     gettimeofday(&_time_stamp, NULL);
     return _time_stamp.tv_sec * 1000000 + _time_stamp.tv_usec;
 }
+uint64_t get_time_msec()
+{
+    static struct timeval _time_stamp;
+    gettimeofday(&_time_stamp, NULL);
+    return _time_stamp.tv_sec * 1000 + _time_stamp.tv_usec/1000;
+}
 MAV_FRAME frame_to_mav_frame(Frame frame)
 {
     switch (frame)

@@ -319,10 +319,12 @@ void AutopilotInterface::read_messages()
             this_timestamps.attitude &&
             this_timestamps.sys_status;
 
-        if ((get_time_usec() - this_timestamps.heartbeat) < 2*1000*1000){
+        if ((get_time_usec() - this_timestamps.heartbeat) < 2 * 1000 * 1000)
+        {
             connected = true;
         }
-        else{
+        else
+        {
             connected = false;
         }
         // give the write thread time to use the port
@@ -378,7 +380,7 @@ void AutopilotInterface::enable_offboard_control()
     // Should only send this command once
     if (control_status == false)
     {
-         LogInfo("autipilot_inter", "ENABLE OFFBOARD MODE");
+        LogInfo("autopilot_interface", "ENABLE OFFBOARD MODE");
 
         int success = toggle_offboard_control(true);
         // sprintf()
@@ -403,7 +405,7 @@ void AutopilotInterface::disable_offboard_control()
 
     if (control_status == true)
     {
-         LogInfo("autipilot_inter", "DISABLE OFFBOARD MODE");
+        LogInfo("autopilot_interface", "DISABLE OFFBOARD MODE");
 
         int success = toggle_offboard_control(false);
 
@@ -437,7 +439,7 @@ void AutopilotInterface::start()
     //   READ THREAD
     // --------------------------------------------------------------------------
 
-    LogInfo("autipilot_inter", "START READ THREAD ");
+    LogInfo("autopilot_interface", "START READ THREAD ");
 
     result = pthread_create(&read_tid, NULL, &start_autopilot_interface_read_thread, this);
     if (result)
@@ -458,16 +460,22 @@ void AutopilotInterface::start()
     // hb.
     mavlink_msg_heartbeat_encode(2, 0, &msg, &hb);
     // lowlevel_protocol->write_message(msg);
-    LogInfo("autipilot_inter", "CHECK FOR MESSAGES");
-
+    LogInfo("autopilot_interface", "CHECK FOR MESSAGES");
+    uint64_t st_time = get_time_msec();
     while (not current_messages.sysid)
     {
         if (time_to_exit)
             return;
+        if ((get_time_msec() - st_time) > 2000)
+        {
+            st_time = get_time_msec();
+            LogWarn("autopilot_interface", "Messages not found");
+        }
+
         usleep(500000); // check at 2Hz
     }
 
-    LogInfo("autipilot_inter", "Found");
+    LogInfo("autopilot_interface", "Found");
 
     // now we know autopilot is sending messages
     //printf("\n");
@@ -530,7 +538,7 @@ void AutopilotInterface::start()
     // --------------------------------------------------------------------------
     //   WRITE THREAD
     // --------------------------------------------------------------------------
-    LogInfo("autipilot_inter", "START WRITE THREAD ");
+    LogInfo("autopilot_interface", "START WRITE THREAD ");
 
     result = pthread_create(&write_tid, NULL, &start_autopilot_interface_write_thread, this);
     if (result)
@@ -583,7 +591,7 @@ void AutopilotInterface::start_write_thread(void)
 void AutopilotInterface::stop()
 {
 
-    LogInfo("autipilot_inter", "CLOSE THREADS");
+    LogInfo("autopilot_interface", "CLOSE THREADS");
 
     // signal exit
     time_to_exit = true;
@@ -623,8 +631,9 @@ void AutopilotInterface::calc_nav_setpoint()
         // float distance = get_dist(nav_start.pose.position, setpoint_position_transformed.pose.position);
         // float time = distance / speed;
         float passed = ((float)(stamp - nav_time_stamp) / 1000.0f) / time;
-        
-        if (passed >= 1){
+
+        if (passed >= 1)
+        {
             with_nav_setpoint = false;
         }
         current_setpoint.x = nav_start_setpoint.x + (nav_setpoint.x - nav_start_setpoint.x) * passed;
@@ -688,7 +697,7 @@ void AutopilotInterface::write_setpoint()
     // --------------------------------------------------------------------------
 
     mavlink_message_t message;
-    mavlink_msg_set_position_target_local_ned_encode(system_id , MAV_COMP_ID_ALL, &message, &sp);
+    mavlink_msg_set_position_target_local_ned_encode(system_id, MAV_COMP_ID_ALL, &message, &sp);
     // mavlink_msg_set_position_target_local_ned
     // --------------------------------------------------------------------------
     //   WRITE
