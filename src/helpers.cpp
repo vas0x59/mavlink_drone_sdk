@@ -186,13 +186,13 @@ string mode_ToString(Mode mode)
 string Telemetry::ToString()
 {
     // return
-    string str_out = "Telemetry: \n";
+    string str_out = "";
     str_out += " Position: " + position.ToString() + "\n";
     str_out += " Velocity: " + velocity.ToString() + "\n";
     str_out += " Rotation: " + rotation.ToString() + "\n";
     str_out += " Mode: " + mode_ToString(mode) + "\n";
     str_out += " Armed: " + to_string(armed) + "\n";
-    str_out += " Connected: " + to_string(connected) + "\n";
+    str_out += " Connected: " + to_string(connected);
     return str_out;
 }
 

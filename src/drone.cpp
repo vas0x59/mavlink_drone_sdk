@@ -27,7 +27,7 @@ Drone::~Drone()
 
 void Drone::navigate(PointXYZyaw pose, Frame frame, float speed)
 {
-    if (log >= 2){
+    if (log >= 1){
         LogInfo("Drone","Navigate pose:" + pose.ToString() + " frame:" + frame_ToString(frame) + " speed:" + to_string(speed));
     }
     mavlink_set_position_target_local_ned_t setpoint;
@@ -41,13 +41,13 @@ void Drone::navigate(PointXYZyaw pose, Frame frame, float speed)
 }
 void Drone::set_position(PointXYZyaw pose, Frame frame)
 {
-    if (log >= 2){
+    if (log >= 1){
         LogInfo("Drone","Set_Position pose:" + pose.ToString() + " frame:" + frame_ToString(frame));
     }
     mavlink_set_position_target_local_ned_t setpoint;
     MAV_FRAME mav_frame = frame_to_mav_frame(frame);
     pose = enu_to_ned(pose);
-    cout << pose.ToString();
+    // cout << pose.ToString();
     autopilot_interface::set_position(pose.x, pose.y, pose.z, mav_frame, setpoint);
     autopilot_interface::set_yaw(pose.yaw, setpoint);
 
@@ -164,7 +164,7 @@ void Drone::land()
 }
 void Drone::sleep(uint16_t msec)
 {
-    if (log >= 2){
+    if (log >= 1){
         LogInfo("Drone", "Sleep: " + to_string(msec));
     }
     usleep((uint32_t)msec * 1000);
@@ -172,17 +172,25 @@ void Drone::sleep(uint16_t msec)
 void Drone::navigate_wait(PointXYZyaw pose, Frame frame, float speed, float thresh){
     navigate(pose, FRAME_BODY, speed);
     // to_string()
+    uint8_t j = 1;
     while (true){
         Telemetry telemetry = get_telemetry(FRAME_BODY);
         // std::cout << telemetry.ToString() << std::endl;
-        if (log >= 2){
-            LogInfo("Drone", "Telemetry: " + telemetry.ToString());
+        if (log == 1){
+            if(j == ((int)300/(int)80)){
+                LogInfo("Drone", "Telemetry: \n" + telemetry.ToString()); 
+                j = 0;
+            }
+        }
+        if (log == 2){
+            LogInfo("Drone", "Telemetry: \n" + telemetry.ToString());
         }
         if (get_dist(telemetry.position, {pose.x, pose.y, pose.z}) < thresh){
             break;
         }
         
-        sleep(80);
+        usleep(80 * 1000);
+        j++;
         // cout << "z: " <<  telemetry.position.x << "y: " << telemetry.position.y << "z: " << telemetry.position.z << endl;
     }
 }
