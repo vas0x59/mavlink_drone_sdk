@@ -166,7 +166,7 @@ void Drone::navigate_wait(PointXYZyaw pose, Frame frame, float speed, float thre
         if (get_dist(telemetry.position, {pose.x, pose.y, pose.z}) < thresh){
             break;
         }
-        sleep(30);
+        sleep(100);
         // cout << "z: " <<  telemetry.position.x << "y: " << telemetry.position.y << "z: " << telemetry.position.z << endl;
     }
 }
