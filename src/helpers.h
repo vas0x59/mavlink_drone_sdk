@@ -11,6 +11,7 @@
 #include <string>
 #include "px4_custom_mode.h"
 #include <cmath>
+#include "log.h"
 
 using namespace std;
 namespace mavlink_indoor_sdk
