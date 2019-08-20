@@ -27,6 +27,9 @@ Drone::~Drone()
 
 void Drone::navigate(PointXYZyaw pose, Frame frame, float speed)
 {
+    if (log >= 2){
+        LogInfo("Drone","Navigate pose:" + pose.ToString() + " frame:" + frame_ToString(frame) + " speed:" + to_string(speed));
+    }
     mavlink_set_position_target_local_ned_t setpoint;
     MAV_FRAME mav_frame = frame_to_mav_frame(frame);
     pose = enu_to_ned(pose);
@@ -38,6 +41,9 @@ void Drone::navigate(PointXYZyaw pose, Frame frame, float speed)
 }
 void Drone::set_position(PointXYZyaw pose, Frame frame)
 {
+    if (log >= 2){
+        LogInfo("Drone","Set_Position pose:" + pose.ToString() + " frame:" + frame_ToString(frame));
+    }
     mavlink_set_position_target_local_ned_t setpoint;
     MAV_FRAME mav_frame = frame_to_mav_frame(frame);
     pose = enu_to_ned(pose);
@@ -110,11 +116,13 @@ void Drone::toggle_arming(bool arm_)
 }
 void Drone::arm()
 {
+    LogWarn("Drone", "ARM");
     toggle_arming(true);
 }
 
 void Drone::disarm()
 {
+    LogWarn("Drone", "DISARM");
     toggle_arming(false);
 }
 
@@ -129,6 +137,7 @@ void Drone::takeoff(float alt, float speed)
 }
 void Drone::land()
 {
+    LogWarn("Drone", "LAND");
     // MAV_CMD_NAV_LAND_LOCAL
     mavlink_command_long_t com = {0};
     com.target_system = 1;
@@ -165,6 +174,9 @@ void Drone::navigate_wait(PointXYZyaw pose, Frame frame, float speed, float thre
         // std::cout << telemetry.ToString() << std::endl;
         if (get_dist(telemetry.position, {pose.x, pose.y, pose.z}) < thresh){
             break;
+        }
+        if (log >= 2){
+            LogInfo("Drone", "Telemetry: " + telemetry.ToString());
         }
         sleep(100);
         // cout << "z: " <<  telemetry.position.x << "y: " << telemetry.position.y << "z: " << telemetry.position.z << endl;

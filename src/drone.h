@@ -30,6 +30,7 @@ public:
     void sleep(uint16_t msec);
     void start();
     void stop();
+    int log = 2;
     // void navigate()
 private:
     autopilot_interface::AutopilotInterface *ai;

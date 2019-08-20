@@ -493,14 +493,16 @@ void AutopilotInterface::start()
     if (not system_id)
     {
         system_id = 1;
-        printf("GOT VEHICLE SYSTEM ID: %i\n", system_id);
+        // printf("GOT VEHICLE SYSTEM ID: %i\n", system_id);
+        LogInfo("autopilot_interface", "GOT VEHICLE SYSTEM ID: " + to_string(system_id));
     }
 
     // Component ID
     if (not autopilot_id)
     {
         autopilot_id = current_messages.compid;
-        printf("GOT AUTOPILOT COMPONENT ID: %i\n", autopilot_id);
+        // printf("GOT AUTOPILOT COMPONENT ID: %i\n", autopilot_id);
+        LogInfo("autopilot_interface", "GOT AUTOPILOT COMPONENT ID: " + to_string(system_id));
         //printf("\n");
     }
 
@@ -529,8 +531,10 @@ void AutopilotInterface::start()
     initial_position.yaw = local_data.attitude.yaw;
     initial_position.yaw_rate = local_data.attitude.yawspeed;
 
-    printf("INITIAL POSITION XYZ = [ %.4f , %.4f , %.4f ] \n", initial_position.x, initial_position.y, initial_position.z);
-    printf("INITIAL POSITION YAW = %.4f \n", initial_position.yaw);
+    // printf("INITIAL POSITION XYZ = [ %.4f , %.4f , %.4f ] \n", initial_position.x, initial_position.y, initial_position.z);
+    // printf("INITIAL POSITION YAW = %.4f \n", initial_position.yaw);
+    LogInfo("autopilot_interface", format("INITIAL POSITION XYZ = [ %.4f , %.4f , %.4f ]", initial_position.x, initial_position.y, initial_position.z));
+    LogInfo("autopilot_interface", format("INITIAL POSITION YAW = %.4f \n", initial_position.yaw));
     //printf("\n");
 
     // we need this before starting the write thread
