@@ -634,8 +634,8 @@ void AutopilotInterface::calc_nav_setpoint()
         float time = nav_distance / nav_speed;
         // float distance = get_dist(nav_start.pose.position, setpoint_position_transformed.pose.position);
         // float time = distance / speed;
-        float passed = ((float)(stamp - nav_time_stamp) / 1000.0f) / time;
-
+        float passed = ((float)(stamp - nav_time_stamp) / 1000.0f) / (float)time;
+        // LogWarn("PASSED", to_string(passed));
         if (passed >= 1)
         {
             with_nav_setpoint = false;
@@ -746,11 +746,17 @@ void AutopilotInterface::write_thread(void)
 
     // Pixhawk needs to see off-board commands at minimum 2Hz,
     // otherwise it will go into fail safe
+    // uint16_t j = 0;
     while (!time_to_exit)
     {
-        usleep(100000); // Stream at 10Hz
+        usleep(50000); // Stream at 10Hz
+        // if (j == 1)
+        // {
         calc_nav_setpoint();
+            // j = 1;
+        // }
         write_setpoint();
+        // j++;
     }
 
     // signal end

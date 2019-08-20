@@ -163,7 +163,7 @@ private:
     mavlink_set_position_target_local_ned_t nav_start_setpoint;
 
     float nav_speed = 1;
-    uint64_t nav_time_stamp = 1;
+    uint64_t nav_time_stamp = 0;
     bool with_nav_setpoint = false;
     float nav_distance = 0;
 
