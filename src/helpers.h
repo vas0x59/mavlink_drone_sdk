@@ -6,11 +6,13 @@
 #include <iostream>
 #include <vector>
 #include <sys/time.h>
-#include "mavlink.h"
 #include <pthread.h> // This uses POSIX Threads
+#include <cstdarg>
 #include <string>
-#include "px4_custom_mode.h"
 #include <cmath>
+
+#include "mavlink.h"
+#include "px4_custom_mode.h"
 #include "log.h"
 
 using namespace std;
@@ -124,5 +126,7 @@ PointXYZ ned_to_enu(PointXYZ ned);
 PointXYZyaw enu_to_ned(PointXYZyaw enu);
 PointXYZyaw ned_to_enu(PointXYZyaw ned);
 
+std::string format (const char *fmt, ...);
+std::string vformat (const char *fmt, va_list ap);
 } // namespace mavlink_indoor_sdk
 #endif
