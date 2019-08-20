@@ -660,7 +660,7 @@ void AutopilotInterface::read_thread()
     while (!time_to_exit)
     {
         read_messages();
-        usleep(100000); // Read batches at 10Hz
+        usleep(1000000 / 16); // Read batches at 16Hz
     }
 
     reading_status = false;
