@@ -57,6 +57,7 @@ Telemetry Drone::get_telemetry(Frame frame)
 {
     // MAV_FRAME mav_frame = frame_to_mav_frame(frame);
     Telemetry telemetry;
+    telemetry.frame = frame;
     if (frame == FRAME_VISION)
     {
         telemetry.position.x = ai->current_messages.local_position_vision_ned.x;
@@ -170,11 +171,11 @@ void Drone::sleep(uint16_t msec)
     usleep((uint32_t)msec * 1000);
 };
 void Drone::navigate_wait(PointXYZyaw pose, Frame frame, float speed, float thresh){
-    navigate(pose, FRAME_BODY, speed);
+    navigate(pose, frame, speed);
     // to_string()
     uint8_t j = 1;
     while (true){
-        Telemetry telemetry = get_telemetry(FRAME_BODY);
+        Telemetry telemetry = get_telemetry(frame);
         // std::cout << telemetry.ToString() << std::endl;
         if (log == 1){
             if(j == ((int)300/(int)80)){

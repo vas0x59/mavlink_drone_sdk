@@ -187,6 +187,7 @@ string Telemetry::ToString()
 {
     // return
     string str_out = "";
+    str_out += " Frame: " + frame_ToString(frame) + "\n";
     str_out += " Position: " + position.ToString() + "\n";
     str_out += " Velocity: " + velocity.ToString() + "\n";
     str_out += " Rotation: " + rotation.ToString() + "\n";

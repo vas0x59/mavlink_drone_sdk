@@ -100,7 +100,7 @@ struct Telemetry
     bool armed;
     bool connected;
     Battery battery;
-
+    Frame frame;
     string ToString();
 };
 enum Frame
