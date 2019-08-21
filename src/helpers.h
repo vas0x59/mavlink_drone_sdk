@@ -43,6 +43,8 @@ enum Mode
 
 struct PointXYZ
 {
+    PointXYZ(){};
+    PointXYZ(float x_, float y_, float z_);
     float x;
     float y;
     float z;
@@ -50,24 +52,16 @@ struct PointXYZ
     string ToString();
     // operator
 };
-/*
-PointXYZ operator+(PointXYZ q, PointXYZ r)
-{
-    q.x = q.x + r.x;
-    q.y = q.y + r.y;
-    q.z = q.z + r.z;
-    return q;
-}
-PointXYZ operator-(PointXYZ q, PointXYZ r)
-{
-    q.x = q.x - r.x;
-    q.y = q.y - r.y;
-    q.z = q.z - r.z;
-    return q;
-}
-*/
+
+PointXYZ operator+(PointXYZ q, PointXYZ r);
+PointXYZ operator-(PointXYZ q, PointXYZ r);
+PointXYZ operator*(PointXYZ q, PointXYZ r);
+PointXYZ operator/(PointXYZ q, PointXYZ r);
+
 struct RotationRPY
 {
+    RotationRPY(){};
+    RotationRPY(float r_, float p_, float y_);
     float roll;
     float pitch;
     float yaw;
@@ -84,6 +78,8 @@ struct Battery
 };
 struct PointXYZyaw
 {
+    PointXYZyaw(){};
+    PointXYZyaw(float x_, float y_, float z_, float yaw_);
     float x;
     float y;
     float z;
