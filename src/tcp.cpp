@@ -109,4 +109,13 @@ void TCP_Protocol::stop()
 {
     close(sock);
 }
+void TCP_Protocol::handle_quit(int sig){
+    LogInfo("TCP Connection", "STOP");
+    try {
+		stop();
+	}
+	catch (int error) {
+		LogError("TCP Connection", "Warning, could not stop ");
+	}
+}
 }; // namespace mavlink_indoor_sdk

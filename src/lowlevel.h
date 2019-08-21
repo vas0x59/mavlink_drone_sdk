@@ -21,6 +21,7 @@ public:
     virtual int read_message(mavlink_message_t &message){return 0;};
     virtual int write_message(mavlink_message_t &message){return 0;};
     int status = 1;
+    virtual void handle_quit(int sig){};
     // void start(){};
     // void stop(){};
 };

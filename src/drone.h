@@ -13,6 +13,7 @@ class Drone
 {
 public:
     // Drone();
+    Drone();
     Drone(autopilot_interface::AutopilotInterface *ai_);
     ~Drone();
 
@@ -30,6 +31,7 @@ public:
     void sleep(uint16_t msec);
     void start();
     void stop();
+    void handle_quit(int sig);
     int log = 1;
     // void navigate()
 private:

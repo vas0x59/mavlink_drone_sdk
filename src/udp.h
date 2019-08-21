@@ -52,7 +52,7 @@ public:
     int status;
     // void start();
     // void stop();
-
+    void handle_quit(int sig);
 private:
     int port;
     string target_ip;

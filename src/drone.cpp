@@ -19,6 +19,10 @@ void Drone::stop()
     ai->disable_offboard_control();
     ai->stop();
 }
+void Drone::handle_quit(int sig){
+    
+    ai->handle_quit(sig);
+}
 
 Drone::~Drone()
 {

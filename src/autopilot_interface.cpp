@@ -121,6 +121,11 @@ AutopilotInterface::AutopilotInterface()
     current_messages.compid = autopilot_id;
 }
 
+AutopilotInterface::~AutopilotInterface()
+{
+    stop();
+}
+
 AutopilotInterface::AutopilotInterface(LowLevel *lowlevel_protocol_)
 {
     write_count = 0;
@@ -621,7 +626,7 @@ void AutopilotInterface::
     }
     catch (int error)
     {
-        fprintf(stderr, "Warning, could not stop autopilot interface\n");
+        LogError("autopilot_interface", "Warning, could not stop autopilot interface");
     }
 }
 

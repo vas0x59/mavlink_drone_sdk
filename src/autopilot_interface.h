@@ -122,6 +122,7 @@ class AutopilotInterface
 public:
     AutopilotInterface();
     AutopilotInterface(LowLevel *lowlevel_protocol_);
+    ~AutopilotInterface();
     int system_id;
     int autopilot_id;
     int companion_id;

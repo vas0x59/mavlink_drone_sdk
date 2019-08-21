@@ -159,4 +159,14 @@ void UDP_Protocol::start(string url)
 void UDP_Protocol::stop()
 {
 }
+
+void UDP_Protocol::handle_quit(int sig){
+    LogInfo("UDP Connection", "STOP");
+    try {
+		stop();
+	}
+	catch (int error) {
+		LogError("UDP Connection", "Warning, could not stop ");
+	}
+}
 }; // namespace mavlink_indoor_sdk

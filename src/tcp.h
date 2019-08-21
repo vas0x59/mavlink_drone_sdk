@@ -48,6 +48,7 @@ public:
     int read_message(mavlink_message_t &message);
     int write_message(mavlink_message_t &message);
     int status;
+    void handle_quit(int sig);
     // void start();
     // void stop();
 
