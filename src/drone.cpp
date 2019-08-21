@@ -134,7 +134,7 @@ void Drone::takeoff(float alt, float speed)
     arm();
     sleep(1000);
     // navigate({0, 0, alt, 0}, FRAME_BODY, speed);
-    set_position({0, 0, alt / 1.5, 0}, FRAME_LOCAL);
+    navigate({0, 0, alt/2, 0}, FRAME_BODY, 1);
     sleep((uint16_t)(alt / speed));
     navigate({0, 0, alt, 0}, FRAME_LOCAL, speed);
 }
