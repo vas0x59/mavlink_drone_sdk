@@ -21,7 +21,7 @@ MAV_FRAME frame_to_mav_frame(Frame frame)
     switch (frame)
     {
     case FRAME_BODY:
-        return MAV_FRAME_LOCAL_NED;
+        return MAV_FRAME_BODY_NED;
     case FRAME_LOCAL:
         return MAV_FRAME_LOCAL_NED;
     case FRAME_VISION:
