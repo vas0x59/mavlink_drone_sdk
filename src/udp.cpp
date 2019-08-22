@@ -104,8 +104,9 @@ int UDP_Protocol::read_message(mavlink_message_t &message)
 
         if (existing_remote == remotes.end())
         {
-            std::cout << "New system on: " << new_remote.ip << ":"
-                      << new_remote.port_number << "\n";
+            // std::cout << "New system on: " << new_remote.ip << ":"
+            //           << new_remote.port_number << "\n";
+            LogInfo("UDP Connection", "New system on: " + new_remote.ip + ":" + to_string(new_remote.port_number));
             remotes.push_back(new_remote);
         }
     }

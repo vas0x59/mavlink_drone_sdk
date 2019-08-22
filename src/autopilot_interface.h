@@ -151,7 +151,7 @@ public:
     uint8_t log = 2;
     // void navigate()
 private:
-    
+    uint64_t last_connect_check = 0;
     bool time_to_exit =false;
     uint64_t write_count;
 

@@ -168,6 +168,7 @@ void AutopilotInterface::read_messages()
     bool success;              // receive success flag
     bool received_all = false; // receive only one message
     Time_Stamps this_timestamps;
+    
 
     // Blocking wait for new data
     while (!received_all and !time_to_exit)
@@ -324,13 +325,19 @@ void AutopilotInterface::read_messages()
             this_timestamps.attitude &&
             this_timestamps.sys_status;
 
-        if ((get_time_usec() - this_timestamps.heartbeat) < 2 * 1000 * 1000)
+        if ((get_time_msec() - (this_timestamps.heartbeat / 1000)) < 2000)
         {
             connected = true;
+            last_connect_check = get_time_msec();
         }
         else
         {
             connected = false;
+            // cout << (get_time_msec() - last_connect_check) << "\n";
+            if ((get_time_msec() - last_connect_check) > 2000){
+                LogWarn("autopilot_interface", "Messages not found 2s");
+                last_connect_check = get_time_msec();
+            }
         }
         // give the write thread time to use the port
         if (writing_status > false)
@@ -385,7 +392,7 @@ void AutopilotInterface::enable_offboard_control()
     // Should only send this command once
     if (control_status == false)
     {
-        LogInfo("autopilot_interface", "ENABLE OFFBOARD MODE");
+        LogWarn("autopilot_interface", "ENABLE OFFBOARD MODE");
 
         int success = toggle_offboard_control(true);
         // sprintf()
@@ -410,7 +417,7 @@ void AutopilotInterface::disable_offboard_control()
 
     if (control_status == true)
     {
-        LogInfo("autopilot_interface", "DISABLE OFFBOARD MODE");
+        LogWarn("autopilot_interface", "DISABLE OFFBOARD MODE");
 
         int success = toggle_offboard_control(false);
 
