@@ -94,6 +94,8 @@ Telemetry Drone::get_telemetry(Frame frame)
     telemetry.connected = ai->connected;
 
     telemetry.mode = custom_mode_to_mode(ai->current_messages.heartbeat.custom_mode);
+    // telemetry.battery.remaining = ai->current_messages.battery_status.battery_remaining;
+    telemetry.battery = Battery(ai->current_messages.battery_status);
     // telemetry.mode = base_mode_to_mode(ai->current_messages.heartbeat.base_mode);
 
     // telemetry.armed = base_mode_to_arm(ai->current_messages.heartbeat.base_mode);

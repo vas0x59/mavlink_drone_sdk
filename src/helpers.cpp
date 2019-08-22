@@ -193,8 +193,33 @@ string Telemetry::ToString()
     str_out += " Rotation: " + rotation.ToString() + "\n";
     str_out += " Mode: " + mode_ToString(mode) + "\n";
     str_out += " Armed: " + to_string(armed) + "\n";
-    str_out += " Connected: " + to_string(connected);
+    str_out += " Connected: " + to_string(connected) + "\n";
+    str_out += " Battery: " + battery.ToString();
     return str_out;
+}
+
+string Battery::ToString(){
+    string str_out = "";
+    str_out += "voltage:" + format("%.3f", voltage);
+    str_out += " remaining:" + format("%.2f", remaining);
+    str_out += " cells_count:" + to_string(cells_count);
+    
+    return str_out;
+}
+
+Battery::Battery(mavlink_battery_status_t mav_bat){
+    remaining = mav_bat.battery_remaining;
+    voltage = 0;
+    for (int i = 0; i < 10; i++){
+        float v = (float)mav_bat.voltages[i] / 1000.0f;
+        if (mav_bat.voltages[i] == 65535){
+            cells_count = i;
+            break;
+        }
+        // cout << mav_bat.voltages[i] << " " << i << "\n";
+        voltage += v;
+    }
+    
 }
 
 inline double hypot(double x, double y, double z)

@@ -70,10 +70,12 @@ struct RotationRPY
 };
 struct Battery
 {
-    int cells_count;
+    Battery(){};
+    Battery(mavlink_battery_status_t mav_bat);
+    int cells_count = 0;
     std::vector<float> cells_voltage;
-    float voltage;
-
+    float voltage = 0;
+    float remaining = 0;
     string ToString();
 };
 struct PointXYZyaw
