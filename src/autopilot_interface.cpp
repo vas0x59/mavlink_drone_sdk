@@ -531,7 +531,7 @@ void AutopilotInterface::start()
 
         usleep(500000);
     }
-
+    
     // copy initial position ned
     Mavlink_Messages local_data = current_messages;
     initial_position.x = local_data.local_position_ned.x;
