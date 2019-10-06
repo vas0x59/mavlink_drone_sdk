@@ -1,6 +1,6 @@
 #include "tcp.h"
 #include <iostream>
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 TCP_Protocol::TCP_Protocol(string url)
 {
@@ -118,4 +118,4 @@ void TCP_Protocol::handle_quit(int sig){
 		LogError("TCP Connection", "Warning, could not stop ");
 	}
 }
-}; // namespace mavlink_indoor_sdk
+}; // namespace mavlink_drone_sdk

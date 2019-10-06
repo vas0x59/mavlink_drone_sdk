@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 class LowLevel
 {

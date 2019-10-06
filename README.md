@@ -1,4 +1,4 @@
-# mavlink_indoor_sdk
+# mavlink_drone_sdk
 
 ## Build
 Only for linux

@@ -18,7 +18,7 @@
 #define MAVLINK_MSG_SET_POSITION_TARGET_LOCAL_NED_YAW_ANGLE 0b0000100111111111
 #define MAVLINK_MSG_SET_POSITION_TARGET_LOCAL_NED_YAW_RATE 0b0000010111111111
 using namespace std;
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 namespace autopilot_interface
 {
@@ -149,6 +149,7 @@ public:
     Mavlink_Messages current_messages;
     bool connected = false;
     uint8_t log = 2;
+    bool wait_for_init_pose = true;
     // void navigate()
 private:
     uint64_t last_connect_check = 0;
@@ -180,6 +181,6 @@ private:
     LowLevel *lowlevel_protocol;
 };
 } // namespace autopilot_interface
-} // namespace mavlink_indoor_sdk
+} // namespace mavlink_drone_sdk
 
 #endif

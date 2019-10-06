@@ -32,7 +32,7 @@ using namespace std;
 
 #define BUFFER_LENGTH 2041 // 2041
 
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 class TCP_Protocol : public LowLevel
 {
@@ -71,6 +71,6 @@ private:
     // unsigned int temp = 0;
 
 };
-}; // namespace mavlink_indoor_sdk
+}; // namespace mavlink_drone_sdk
 
 #endif

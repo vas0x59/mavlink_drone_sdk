@@ -1,6 +1,6 @@
 #include "udp.h"
 #include <iostream>
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 
 UDP_Protocol::UDP_Protocol(string url)
@@ -170,4 +170,4 @@ void UDP_Protocol::handle_quit(int sig){
 		LogError("UDP Connection", "Warning, could not stop ");
 	}
 }
-}; // namespace mavlink_indoor_sdk
+}; // namespace mavlink_drone_sdk

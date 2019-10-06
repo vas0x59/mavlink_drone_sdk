@@ -2,7 +2,7 @@
 
 using namespace std;
 
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 uint64_t get_time_usec()
 {
@@ -364,4 +364,4 @@ std::string vformat (const char *fmt, va_list ap)
     }
 }
 // float get_dist
-}; // namespace mavlink_indoor_sdk
+}; // namespace mavlink_drone_sdk

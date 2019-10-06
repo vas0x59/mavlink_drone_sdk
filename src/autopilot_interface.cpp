@@ -6,7 +6,7 @@
 #include <signal.h>
 using namespace std;
 
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 namespace autopilot_interface
 {
@@ -168,7 +168,6 @@ void AutopilotInterface::read_messages()
     bool success;              // receive success flag
     bool received_all = false; // receive only one message
     Time_Stamps this_timestamps;
-    
 
     // Blocking wait for new data
     while (!received_all and !time_to_exit)
@@ -312,18 +311,27 @@ void AutopilotInterface::read_messages()
         } // end: if read message
 
         // Check for receipt of all items
-        received_all =
-            this_timestamps.heartbeat &&
-            this_timestamps.battery_status &&
-            this_timestamps.radio_status &&
-            this_timestamps.local_position_ned &&
-            this_timestamps.local_position_vision_ned &&
-            this_timestamps.global_position_int &&
-            this_timestamps.position_target_local_ned &&
-            this_timestamps.position_target_global_int &&
-            this_timestamps.highres_imu &&
-            this_timestamps.attitude &&
-            this_timestamps.sys_status;
+        if (wait_for_init_pose == true)
+        {
+            received_all =
+                this_timestamps.heartbeat &&
+                this_timestamps.battery_status &&
+                this_timestamps.radio_status &&
+                this_timestamps.local_position_ned &&
+                this_timestamps.local_position_vision_ned &&
+                this_timestamps.global_position_int &&
+                this_timestamps.position_target_local_ned &&
+                this_timestamps.position_target_global_int &&
+                this_timestamps.highres_imu &&
+                this_timestamps.attitude &&
+                this_timestamps.sys_status;
+        }
+        else
+        {
+            received_all =
+                this_timestamps.heartbeat &&
+                this_timestamps.sys_status;
+        }
 
         if ((get_time_msec() - (this_timestamps.heartbeat / 1000)) < 2000)
         {
@@ -334,7 +342,8 @@ void AutopilotInterface::read_messages()
         {
             connected = false;
             // cout << (get_time_msec() - last_connect_check) << "\n";
-            if ((get_time_msec() - last_connect_check) > 2000){
+            if ((get_time_msec() - last_connect_check) > 2000)
+            {
                 LogWarn("autopilot_interface", "Messages not found 2s");
                 last_connect_check = get_time_msec();
             }
@@ -504,7 +513,7 @@ void AutopilotInterface::start()
     // System ID
     if (not system_id)
     {
-        system_id = 1;
+        system_id = 2;
         // printf("GOT VEHICLE SYSTEM ID: %i\n", system_id);
         LogInfo("autopilot_interface", "GOT VEHICLE SYSTEM ID: " + to_string(system_id));
     }
@@ -523,15 +532,18 @@ void AutopilotInterface::start()
     // --------------------------------------------------------------------------
 
     // Wait for initial position ned
-    while (not(current_messages.time_stamps.local_position_ned &&
-               current_messages.time_stamps.attitude))
+    if (wait_for_init_pose == true)
     {
-        if (time_to_exit)
-            return;
+        while (not(current_messages.time_stamps.local_position_ned &&
+                   current_messages.time_stamps.attitude))
+        {
+            if (time_to_exit)
+                return;
 
-        usleep(500000);
+            usleep(500000);
+        }
     }
-    
+
     // copy initial position ned
     Mavlink_Messages local_data = current_messages;
     initial_position.x = local_data.local_position_ned.x;
@@ -765,7 +777,7 @@ void AutopilotInterface::write_thread(void)
         // if (j == 1)
         // {
         calc_nav_setpoint();
-            // j = 1;
+        // j = 1;
         // }
         write_setpoint();
         // j++;
@@ -786,8 +798,8 @@ void AutopilotInterface::write_thread(void)
 void *start_autopilot_interface_read_thread(void *args)
 {
     // takes an autopilot object argument
-    mavlink_indoor_sdk::autopilot_interface::AutopilotInterface *autopilot_interface =
-        (mavlink_indoor_sdk::autopilot_interface::AutopilotInterface *)args;
+    mavlink_drone_sdk::autopilot_interface::AutopilotInterface *autopilot_interface =
+        (mavlink_drone_sdk::autopilot_interface::AutopilotInterface *)args;
 
     // run the object's read thread
     autopilot_interface->start_read_thread();
@@ -799,8 +811,8 @@ void *start_autopilot_interface_read_thread(void *args)
 void *start_autopilot_interface_write_thread(void *args)
 {
     // takes an autopilot object argument
-    mavlink_indoor_sdk::autopilot_interface::AutopilotInterface *autopilot_interface =
-        (mavlink_indoor_sdk::autopilot_interface::AutopilotInterface *)args;
+    mavlink_drone_sdk::autopilot_interface::AutopilotInterface *autopilot_interface =
+        (mavlink_drone_sdk::autopilot_interface::AutopilotInterface *)args;
 
     // run the object's read thread
     autopilot_interface->start_write_thread();
@@ -810,4 +822,4 @@ void *start_autopilot_interface_write_thread(void *args)
 }
 
 }; // namespace autopilot_interface
-}; // namespace mavlink_indoor_sdk
+}; // namespace mavlink_drone_sdk

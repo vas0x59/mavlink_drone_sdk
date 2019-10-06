@@ -1,5 +1,5 @@
 #include "drone.h"
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 Drone::Drone(autopilot_interface::AutopilotInterface *ai_)
 {
@@ -213,4 +213,4 @@ void Drone::navigate_wait(PointXYZyaw pose, Frame frame, float speed, float thre
         // cout << "z: " <<  telemetry.position.x << "y: " << telemetry.position.y << "z: " << telemetry.position.z << endl;
     }
 }
-}; // namespace mavlink_indoor_sdk
+}; // namespace mavlink_drone_sdk

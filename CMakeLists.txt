@@ -7,7 +7,7 @@ add_definitions("-D_USE_MATH_DEFINES")
 include_directories("./src")
 include_directories("./mavlink/v2.0/common")
 
-add_library(mavlink_indoor_sdk  SHARED
+add_library(mavlink_drone_sdk  SHARED
     ./src/udp.cpp
     ./src/tcp.cpp
     ./src/drone.cpp

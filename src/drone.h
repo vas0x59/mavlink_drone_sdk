@@ -7,7 +7,7 @@
 #include "autopilot_interface.h"
 // #include "lowlevel.h"
 
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 class Drone
 {
@@ -42,6 +42,6 @@ private:
 
 };
 
-} // namespace mavlink_indoor_sdk
+} // namespace mavlink_drone_sdk
 
 #endif

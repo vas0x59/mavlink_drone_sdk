@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 namespace px4
 {
@@ -50,5 +50,5 @@ union px4_custom_mode {
     float data_float;
 };
 } // namespace px4
-} // namespace mavlink_indoor_sdk
+} // namespace mavlink_drone_sdk
 #endif /* PX4_CUSTOM_MODE_H_ */

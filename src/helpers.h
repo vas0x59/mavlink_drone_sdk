@@ -16,7 +16,7 @@
 #include "log.h"
 
 using namespace std;
-namespace mavlink_indoor_sdk
+namespace mavlink_drone_sdk
 {
 
 uint64_t get_time_usec();
@@ -128,5 +128,5 @@ PointXYZyaw ned_to_enu(PointXYZyaw ned);
 
 std::string format (const char *fmt, ...);
 std::string vformat (const char *fmt, va_list ap);
-} // namespace mavlink_indoor_sdk
+} // namespace mavlink_drone_sdk
 #endif
